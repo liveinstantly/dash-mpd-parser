@@ -23,6 +23,8 @@
 
 /**
  * MPEG-DASH MPD constants declaration
+ *   Automatically generated from DASH-MPD.xsd schema file:
+ *   https://github.com/Dash-Industry-Forum/DASH/blob/development/mpdvalidator/schemas/DASH-MPD.xsd
  * @class
  * @ignore
  */
@@ -42,8 +44,8 @@ class DashMpdConstants {
     readonly ESSENTIAL_PROPERTY = 'EssentialProperty';
     readonly EVENT = 'Event';
     readonly EVENT_STREAM = 'EventStream';
-    readonly FCS = 'FCS';
     readonly FAILOVER_CONTENT = 'FailoverContent';
+    readonly FCS = 'FCS';
     readonly FRAME_PACKING = 'FramePacking';
     readonly GROUP_LABEL = 'GroupLabel';
     readonly INBAND_EVENT_STREAM = 'InbandEventStream';
@@ -55,13 +57,13 @@ class DashMpdConstants {
     readonly LATENCY = 'Latency';
     readonly LEAP_SECOND_INFORMATION = 'LeapSecondInformation';
     readonly LOCATION = 'Location';
-    readonly MPD = 'MPD';
     readonly METRICS = 'Metrics';
+    readonly MPD = 'MPD';
     readonly OPERATING_BANDWIDTH = 'OperatingBandwidth';
     readonly OPERATING_QUALITY = 'OperatingQuality';
-    readonly PR = 'PR';
     readonly PERIOD = 'Period';
     readonly PLAYBACK_RATE = 'PlaybackRate';
+    readonly PR = 'PR';
     readonly PRESELECTION = 'Preselection';
     readonly PRODUCER_REFERENCE_TIME = 'ProducerReferenceTime';
     readonly PROGRAM_INFORMATION = 'ProgramInformation';
@@ -135,11 +137,11 @@ class DashMpdConstants {
     readonly ATTR_MAX_DIFFERENCE = 'maxDifference';
     readonly ATTR_MAX_FRAME_RATE = 'maxFrameRate';
     readonly ATTR_MAX_HEIGHT = 'maxHeight';
+    readonly ATTR_MAXIMUMSAP_PERIOD = 'maximumSAPPeriod';
     readonly ATTR_MAX_PLAYOUT_RATE = 'maxPlayoutRate';
     readonly ATTR_MAX_SEGMENT_DURATION = 'maxSegmentDuration';
     readonly ATTR_MAX_SUBSEGMENT_DURATION = 'maxSubsegmentDuration';
     readonly ATTR_MAX_WIDTH = 'maxWidth';
-    readonly ATTR_MAXIMUMSAP_PERIOD = 'maximumSAPPeriod';
     readonly ATTR_MEDIA = 'media';
     readonly ATTR_MEDIA_PRESENTATION_DURATION = 'mediaPresentationDuration';
     readonly ATTR_MEDIA_RANGE = 'mediaRange';
@@ -153,8 +155,8 @@ class DashMpdConstants {
     readonly ATTR_MIN_BUFFER_TIME = 'minBufferTime';
     readonly ATTR_MIN_FRAME_RATE = 'minFrameRate';
     readonly ATTR_MIN_HEIGHT = 'minHeight';
-    readonly ATTR_MIN_WIDTH = 'minWidth';
     readonly ATTR_MINIMUM_UPDATE_PERIOD = 'minimumUpdatePeriod';
+    readonly ATTR_MIN_WIDTH = 'minWidth';
     readonly ATTR_MORE_INFORMATIONURL = 'moreInformationURL';
     readonly ATTR_N = 'n';
     readonly ATTR_NEXT_AVAILABILITY_START_LEAP_OFFSET = 'nextAvailabilityStartLeapOffset';
@@ -181,20 +183,20 @@ class DashMpdConstants {
     readonly ATTR_SELECTION_PRIORITY = 'selectionPriority';
     readonly ATTR_SERVICE_LOCATION = 'serviceLocation';
     readonly ATTR_SOURCE = 'source';
-    readonly ATTR_SOURCEURL = 'sourceURL';
     readonly ATTR_SOURCE_DESCRIPTION = 'source_description';
+    readonly ATTR_SOURCEURL = 'sourceURL';
     readonly ATTR_START = 'start';
     readonly ATTR_START_NUMBER = 'startNumber';
-    readonly ATTR_START_WITHSAP = 'startWithSAP';
     readonly ATTR_STARTTIME = 'starttime';
+    readonly ATTR_START_WITHSAP = 'startWithSAP';
     readonly ATTR_SUBSEGMENT_ALIGNMENT = 'subsegmentAlignment';
     readonly ATTR_SUBSEGMENT_STARTS_WITHSAP = 'subsegmentStartsWithSAP';
     readonly ATTR_SUGGESTED_PRESENTATION_DELAY = 'suggestedPresentationDelay';
     readonly ATTR_T = 't';
     readonly ATTR_TAG = 'tag';
     readonly ATTR_TARGET = 'target';
-    readonly ATTR_TIME_SHIFT_BUFFER_DEPTH = 'timeShiftBufferDepth';
     readonly ATTR_TIMESCALE = 'timescale';
+    readonly ATTR_TIME_SHIFT_BUFFER_DEPTH = 'timeShiftBufferDepth';
     readonly ATTR_TYPE = 'type';
     readonly ATTR_VALID = 'valid';
     readonly ATTR_VALUE = 'value';
@@ -227,9 +229,9 @@ class DashMpdConstants {
         'Metrics',
         'OperatingBandwidth',
         'OperatingQuality',
-        'PR',
         'Period',
         'PlaybackRate',
+        'PR',
         'Preselection',
         'ProducerReferenceTime',
         'ProgramInformation',
