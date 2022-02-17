@@ -1,0 +1,30 @@
+{
+  "name": "dash-mpd-parser",
+  "version": "0.1.0",
+  "description": "A MPEG-DASH MPD manifest parser.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/liveinstantly/dash-mpd-parser"
+  },
+  "author": "Shige Fukushima <shigeyf@liveinstantly.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/liveinstantly/dash-mpd-parser/issues"
+  },
+  "homepage": "https://github.com/liveinstantly/dash-mpd-parser#readme",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./types/index.d.ts",
+  "dependencies": {
+    "node-fetch": "^3.2.0",
+    "xml-js": "^1.6.11"
+  },
+  "devDependencies": {
+    "@types/node": "16",
+    "@types/node-fetch": "^2.6.1",
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "typescript": "^4.5.5"
+  }
+}
