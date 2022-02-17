@@ -1,5 +1,5 @@
 {
-  "name": "dash-mpd-parser",
+  "name": "dash-mpd",
   "version": "0.1.0",
   "description": "A MPEG-DASH MPD manifest parser.",
   "repository": {
