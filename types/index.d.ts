@@ -18,9 +18,9 @@
  * limitations under the License.
  */
 
-export = DashMPD;
-
-declare class DashMPD {
+export declare class DashMPD {
+    mpd: any;
     parse(mpdXml: string): any;
     getMPD(): string;
+    filterVideoRenditionByBandwidth(ranges: [[number, number]]): void;
 }
