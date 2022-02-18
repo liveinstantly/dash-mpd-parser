@@ -64,7 +64,6 @@ export class DashMPD {
             nativeTypeAttributes: true,
             attributesKey: "@",
         });
-        console.log(jsonManifestString);
         this.mpd = JSON.parse(jsonManifestString);
         return this.mpd;
     }
