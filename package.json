@@ -2,6 +2,7 @@
   "name": "dash-mpd",
   "version": "0.1.0",
   "description": "A MPEG-DASH MPD manifest parser.",
+  "keywords": [],
   "repository": {
     "type": "git",
     "url": "https://github.com/liveinstantly/dash-mpd-parser"
@@ -15,6 +16,12 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
+  "scripts": {
+    "prepare": "cp supplemental_files/index.d.ts node_modules/xml-js/types/",
+    "compile": "tsc",
+    "lint": "eslint",
+    "build": "yarn prepare && yarn compile"
+  },
   "dependencies": {
     "node-fetch": "^3.2.0",
     "xml-js": "^1.6.11"
