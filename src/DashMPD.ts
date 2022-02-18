@@ -21,6 +21,9 @@
 import { xml2json, json2xml } from 'xml-js';
 import Dash from './DashMpdConstants';
 
+const AT = '@';
+const AUDIO = 'audio';
+const VIDEO = 'video';
 export class DashMPD {
     mpd: any;
     parse(mpdXml: string): any {
@@ -62,7 +65,7 @@ export class DashMPD {
             ],
             nativeType: true,
             nativeTypeAttributes: true,
-            attributesKey: "@",
+            attributesKey: AT,
         });
         this.mpd = JSON.parse(jsonManifestString);
         return this.mpd;
@@ -74,7 +77,27 @@ export class DashMPD {
             compact: true,
             ignoreComment: true,
             spaces: 1,
-            attributesKey: "@",
+            attributesKey: AT,
+        });
+    }
+
+    filterVideoRenditionByBandwidth(ranges: [[number, number]]): void {
+        function filterFn(element: any) {
+            let result = false;
+            ranges.forEach((range) => {
+                if (range[0] <= element[AT][Dash.ATTR_BANDWIDTH] && element[AT][Dash.ATTR_BANDWIDTH] <= range[1]) {
+                    result = true;
+                }
+            });
+            return result;
+        }
+        this.mpd[Dash.MPD][Dash.PERIOD].forEach((period:any) => {
+            period[Dash.ADAPTATION_SET].forEach((adaptationSet: any) => {
+                if (adaptationSet[AT][Dash.ATTR_CONTENT_TYPE] == VIDEO) {
+                    let filteredRenditions = adaptationSet[Dash.REPRESENTATION].filter(filterFn);
+                    adaptationSet[Dash.REPRESENTATION] = filteredRenditions;
+                }
+            });
         });
     }
 }
