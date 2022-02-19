@@ -1,5 +1,5 @@
 {
-  "name": "dash-mpd",
+  "name": "@liveinstantly/dash-mpd-parser",
   "version": "0.1.0",
   "description": "A MPEG-DASH MPD manifest parser.",
   "keywords": [
@@ -10,8 +10,10 @@
     "mpd",
     "manifest",
     "parser",
-    "video",
-    "adaptive",
+    "player",
+    "adaptive streaming",
+    "audio streaming",
+    "video streaming",
     "streaming"
   ],
   "repository": {
@@ -24,18 +26,22 @@
     "url": "https://github.com/liveinstantly/dash-mpd-parser/issues"
   },
   "homepage": "https://github.com/liveinstantly/dash-mpd-parser#readme",
-  "type": "module",
-  "main": "./dist/index.js",
-  "types": "./types/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "clean": "rimraf ./dist/*",
-    "compile": "tsc",
-    "build": "npm-run-all prepare clean compile",
+    "build": "npm-run-all prepare clean build:cjs build:esm",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:esm": "tsc -p tsconfig.esm.json",
     "lint": "eslint",
     "test": "jest",
     "prepare": "npm-run-all update_xml_js",
     "update_xml_js": "shx cp ./supplemental_files/index.d.ts node_modules/xml-js/types/",
-    "gen_dash_consts": "cd tools && ./generate_constants"
+    "gen_dash_consts": "cd tools && ./generate_constants",
+    "package-test": "yarn link && npm-run-all package-test:cjs package-test:esm",
+    "package-test:cjs": "cd package-tests/cjs && yarn test",
+    "package-test:esm": "cd package-tests/esm && yarn test"
   },
   "dependencies": {
     "xml-js": "^1.6.11"
