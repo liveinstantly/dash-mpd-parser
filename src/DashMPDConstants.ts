@@ -28,7 +28,7 @@
  * @class
  * @ignore
  */
-class DashMpdConstants {
+class DashMPDConstants {
     // DASH MPD Elements
     readonly ACCESSIBILITY = 'Accessibility';
     readonly ADAPTATION_SET = 'AdaptationSet';
@@ -256,5 +256,5 @@ class DashMpdConstants {
     ];
 }
 
-let constants = new DashMpdConstants();
-export default constants;
+let constants = new DashMPDConstants();
+export const DashConstants = constants;
