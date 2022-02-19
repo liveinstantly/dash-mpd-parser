@@ -4,6 +4,7 @@
 /jest.config.js
 /src/
 /supplemental_files
+/tests/
 /tools/
 /tsconfig.eslint.json
 /tsconfig.json
