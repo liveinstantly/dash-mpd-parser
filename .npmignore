@@ -2,9 +2,11 @@
 /.eslintrc.js
 /.gitmodules
 /jest.config.js
+/package-tests/
+/samples/
 /src/
 /supplemental_files
 /tests/
 /tools/
-/tsconfig.eslint.json
+/tsconfig.*.json
 /tsconfig.json
