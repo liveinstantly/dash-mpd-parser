@@ -30,6 +30,8 @@ export class DashMPD {
         const jsonManifestString = xml2json(mpdXml, {
             compact: true,
             spaces: 4,
+            alwaysArray: Dash.ALWAYS_ARRAY_ELEMENTS,
+            /*
             alwaysArray: [
                 Dash.PROGRAM_INFORMATION,
                 Dash.BASEURL,
@@ -63,6 +65,7 @@ export class DashMPD {
                 Dash.REPORTING,
                 Dash.EVENT,
             ],
+            */
             nativeType: true,
             nativeTypeAttributes: true,
             attributesKey: AT,
