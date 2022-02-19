@@ -20,7 +20,7 @@
     "type": "git",
     "url": "https://github.com/liveinstantly/dash-mpd-parser"
   },
-  "author": "Shige Fukushima <shigeyf@liveinstantly.com>",
+  "author": "Shige Fukushima <github@liveinstantly.com>",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/liveinstantly/dash-mpd-parser/issues"
