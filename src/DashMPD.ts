@@ -19,59 +19,33 @@
  */
 
 import { xml2json, json2xml } from 'xml-js';
-import Dash from './DashMpdConstants';
+import { DashConstants as Consts } from './DashMPDConstants';
 
 const AT = '@';
 const AUDIO = 'audio';
 const VIDEO = 'video';
 export class DashMPD {
-    mpd: any;
-    parse(mpdXml: string): any {
+    private mpd: any;
+    //consts = Consts;
+
+    parse(mpdXml: string): void {
         const jsonManifestString = xml2json(mpdXml, {
             compact: true,
             spaces: 4,
-            alwaysArray: Dash.ALWAYS_ARRAY_ELEMENTS,
-            /*
-            alwaysArray: [
-                Dash.PROGRAM_INFORMATION,
-                Dash.BASEURL,
-                Dash.LOCATION,
-                Dash.PERIOD,
-                Dash.METRICS,
-                Dash.ESSENTIAL_PROPERTY,
-                Dash.SUPPLEMENTAL_PROPERTY,
-                Dash.UTC_TIMING,
-                Dash.EVENT_STREAM,
-                Dash.ADAPTATION_SET,
-                Dash.SUBSET,
-                Dash.EMPTY_ADAPTATION_SET,
-                Dash.GROUP_LABEL,
-                Dash.PRESELECTION,
-                Dash.ACCESSIBILITY,
-                Dash.ROLE,
-                Dash.RATING,
-                Dash.VIEWPOINT,
-                Dash.CONTENT_COMPONENT,
-                Dash.REPRESENTATION,
-                Dash.SUB_REPRESENTATION,
-                Dash.FRAME_PACKING,
-                Dash.AUDIO_CHANNEL_CONFIGURATION,
-                Dash.CONTENT_PROTECTION,
-                Dash.INBAND_EVENT_STREAM,
-                Dash.SWITCHING,
-                Dash.RANDOM_ACCESS,
-                Dash.LABEL,
-                Dash.RANGE,
-                Dash.REPORTING,
-                Dash.EVENT,
-            ],
-            */
+            alwaysArray: Consts.ALWAYS_ARRAY_ELEMENTS,
             nativeType: true,
             nativeTypeAttributes: true,
             attributesKey: AT,
         });
         this.mpd = JSON.parse(jsonManifestString);
+    }
+
+    getJSON(): any {
         return this.mpd;
+    }
+
+    setJSON(mpdJson: any) {
+        this.mpd = mpdJson;
     }
 
     getMPD(): string {
@@ -88,17 +62,17 @@ export class DashMPD {
         function filterFn(element: any) {
             let result = false;
             ranges.forEach((range) => {
-                if (range[0] <= element[AT][Dash.ATTR_BANDWIDTH] && element[AT][Dash.ATTR_BANDWIDTH] <= range[1]) {
+                if (range[0] <= element[AT][Consts.ATTR_BANDWIDTH] && element[AT][Consts.ATTR_BANDWIDTH] <= range[1]) {
                     result = true;
                 }
             });
             return result;
         }
-        this.mpd[Dash.MPD][Dash.PERIOD].forEach((period:any) => {
-            period[Dash.ADAPTATION_SET].forEach((adaptationSet: any) => {
-                if (adaptationSet[AT][Dash.ATTR_CONTENT_TYPE] == VIDEO) {
-                    let filteredRenditions = adaptationSet[Dash.REPRESENTATION].filter(filterFn);
-                    adaptationSet[Dash.REPRESENTATION] = filteredRenditions;
+        this.mpd[Consts.MPD][Consts.PERIOD].forEach((period:any) => {
+            period[Consts.ADAPTATION_SET].forEach((adaptationSet: any) => {
+                if (adaptationSet[AT][Consts.ATTR_CONTENT_TYPE] == VIDEO) {
+                    let filteredRenditions = adaptationSet[Consts.REPRESENTATION].filter(filterFn);
+                    adaptationSet[Consts.REPRESENTATION] = filteredRenditions;
                 }
             });
         });
