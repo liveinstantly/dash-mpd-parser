@@ -18,8 +18,5 @@
  * limitations under the License.
  */
 
-import { DashMPD } from "./DashMPD";
-
-module.exports = {
-    DashMPD: DashMPD
-};
+export { DashMPD } from './DashMPD';
+export { DashConstants } from './DashMPDConstants';
