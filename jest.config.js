@@ -4,11 +4,10 @@
  */
 
 // Configurations for Jest testing
-export default {
+module.exports = {
   preset: "ts-jest",
   testEnvironment: 'node',
   testMatch: [
-    "<rootDir>/**/tests/**/*.test.ts",
-    "**/tests/**/*.+(ts|tsx|js)"
+    "<rootDir>/**/tests/**/*.test.(ts|tsx|js)",
   ],
 };
