@@ -1,0 +1,19 @@
+{
+  "name": "dash-mpd-parser-package-test-esm",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "main": "index.mjs",
+  "type": "module",
+  "scripts": {
+    "pkglink": "yarn link @liveinstantly/dash-mpd-parser",
+    "start": "node index.mjs",
+    "clean": "rimraf node_modules",
+    "test": "yarn && yarn pkglink && yarn start && yarn clean"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2"
+  },
+  "dependencies": {
+    "node-fetch": "^3.2.0"
+  }
+}
