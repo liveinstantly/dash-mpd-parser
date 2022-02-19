@@ -84,7 +84,7 @@ export class DashMPD {
         });
     }
 
-    filterVideoRenditionByBandwidth(ranges: [[number, number]]): void {
+    filterVideoRenditionByBandwidth(ranges: [number, number][]): void {
         function filterFn(element: any) {
             let result = false;
             ranges.forEach((range) => {

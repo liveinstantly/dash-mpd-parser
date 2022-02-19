@@ -22,5 +22,5 @@ export declare class DashMPD {
     mpd: any;
     parse(mpdXml: string): any;
     getMPD(): string;
-    filterVideoRenditionByBandwidth(ranges: [[number, number]]): void;
+    filterVideoRenditionByBandwidth(ranges: [number, number][]): void;
 }
