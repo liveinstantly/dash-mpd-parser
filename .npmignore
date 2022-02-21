@@ -1,6 +1,7 @@
 /DASH/
 /.eslintrc.js
 /.gitmodules
+/.prettierrc
 /jest.config.js
 /package-tests/
 /samples/
