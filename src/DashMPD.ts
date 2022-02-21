@@ -4,13 +4,13 @@
 
 /**
  * Copyright 2021 LiveInstantly, LLC - Shigeyuki Fukushima <github@liveinstantly.com>
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,7 +24,8 @@ import { DashConstants as Consts } from './DashMPDConstants';
 const AT = '@';
 const AUDIO = 'audio';
 const VIDEO = 'video';
-export class DashMPD {
+export class DashMPD
+{
     private mpd: any;
     //consts = Consts;
 
@@ -35,7 +36,7 @@ export class DashMPD {
             alwaysArray: Consts.ALWAYS_ARRAY_ELEMENTS,
             nativeType: true,
             nativeTypeAttributes: true,
-            attributesKey: AT,
+            attributesKey: AT
         });
         this.mpd = JSON.parse(jsonManifestString);
     }
@@ -54,7 +55,7 @@ export class DashMPD {
             compact: true,
             ignoreComment: true,
             spaces: 1,
-            attributesKey: AT,
+            attributesKey: AT
         });
     }
 
@@ -68,7 +69,7 @@ export class DashMPD {
             });
             return result;
         }
-        this.mpd[Consts.MPD][Consts.PERIOD].forEach((period:any) => {
+        this.mpd[Consts.MPD][Consts.PERIOD].forEach((period: any) => {
             period[Consts.ADAPTATION_SET].forEach((adaptationSet: any) => {
                 if (adaptationSet[AT][Consts.ATTR_CONTENT_TYPE] == VIDEO) {
                     let filteredRenditions = adaptationSet[Consts.REPRESENTATION].filter(filterFn);

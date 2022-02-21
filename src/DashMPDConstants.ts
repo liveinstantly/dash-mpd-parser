@@ -28,7 +28,8 @@
  * @class
  * @ignore
  */
-class DashMPDConstants {
+class DashMPDConstants
+{
     // DASH MPD Elements
     readonly ACCESSIBILITY = 'Accessibility';
     readonly ADAPTATION_SET = 'AdaptationSet';
@@ -251,8 +252,7 @@ class DashMPDConstants {
         'SupplementalProperty',
         'Switching',
         'UTCTiming',
-        'Viewpoint',
-
+        'Viewpoint'
     ];
 }
 
