@@ -18,27 +18,24 @@
  * limitations under the License.
  */
 
-import { xml2json, json2xml } from 'xml-js';
 import { DashConstants as Consts } from './DashMPDConstants';
+import X2JS from './X2JS';
 
 const AT = '@';
 const AUDIO = 'audio';
 const VIDEO = 'video';
-export class DashMPD
-{
+export class DashMPD {
     private mpd: any;
     //consts = Consts;
 
     parse(mpdXml: string): void {
-        const jsonManifestString = xml2json(mpdXml, {
-            compact: true,
-            spaces: 4,
-            alwaysArray: Consts.ALWAYS_ARRAY_ELEMENTS,
-            nativeType: true,
-            nativeTypeAttributes: true,
-            attributesKey: AT
+        const x2js = new X2JS({
+            attributePrefix: AT,
+            useDoubleQuotes: true,
+            arrayAccessFormPaths: Consts.ALWAYS_ARRAY_ELEMENTS,
+            nativeTypeAttributes: true
         });
-        this.mpd = JSON.parse(jsonManifestString);
+        this.mpd = x2js.xml_str2json(mpdXml);
     }
 
     getJSON(): any {
@@ -50,28 +47,35 @@ export class DashMPD
     }
 
     getMPD(): string {
-        const jsonManifestString = JSON.stringify(this.mpd);
-        return json2xml(jsonManifestString, {
-            compact: true,
-            ignoreComment: true,
-            spaces: 1,
-            attributesKey: AT
+        const x2js = new X2JS({
+            attributePrefix: AT,
+            useDoubleQuotes: true
         });
+        return x2js.json2xml_str(this.mpd);
+    }
+
+    private attr(name: string): string {
+        return AT + name;
     }
 
     filterVideoRenditionByBandwidth(ranges: [number, number][]): void {
+        let self = this;
         function filterFn(element: any) {
             let result = false;
             ranges.forEach((range) => {
-                if (range[0] <= element[AT][Consts.ATTR_BANDWIDTH] && element[AT][Consts.ATTR_BANDWIDTH] <= range[1]) {
+                if (
+                    range[0] <= element[self.attr(Consts.ATTR_BANDWIDTH)] &&
+                    element[self.attr(Consts.ATTR_BANDWIDTH)] <= range[1]
+                ) {
                     result = true;
                 }
             });
             return result;
         }
+
         this.mpd[Consts.MPD][Consts.PERIOD].forEach((period: any) => {
             period[Consts.ADAPTATION_SET].forEach((adaptationSet: any) => {
-                if (adaptationSet[AT][Consts.ATTR_CONTENT_TYPE] == VIDEO) {
+                if (adaptationSet[this.attr(Consts.ATTR_CONTENT_TYPE)] == VIDEO) {
                     let filteredRenditions = adaptationSet[Consts.REPRESENTATION].filter(filterFn);
                     adaptationSet[Consts.REPRESENTATION] = filteredRenditions;
                 }

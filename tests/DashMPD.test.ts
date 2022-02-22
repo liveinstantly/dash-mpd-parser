@@ -10,8 +10,8 @@ import * as fs from 'fs';
 // https://reference.dashif.org/dash.js/v4.2.1/samples/dash-if-reference-player/index.html
 
 const URL1 = 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd';
-const test1_file = 'tests/test1_bbb_30fps.mpd';
-const test2_file = 'tests/test2_bbb_30fps.mpd';
+const test1_file = 'tests/test1_bbb_30fps_nospace.mpd';
+const test2_file = 'tests/test2_bbb_30fps_nospace.mpd';
 
 describe('DashMPD', (): void => {
     test('Test #1: Convert/Revert Test - MPD manifrest XML to JSON to XML', async (): Promise<void> => {
@@ -21,6 +21,8 @@ describe('DashMPD', (): void => {
         mpd.parse(body);
         const result = mpd.getMPD();
         const expected = fs.readFileSync(test1_file).toString();
+        console.log("Result:\n" + result + "EOF");
+        console.log("Expected:\n" + expected + "EOF");
         expect(result===expected).toBe(true);
     });
     test('Test #2: Filter Test - Video Eendition Filtering', async (): Promise<void> => {
@@ -35,6 +37,8 @@ describe('DashMPD', (): void => {
         mpd.filterVideoRenditionByBandwidth(ranges);
         const result = mpd.getMPD();
         const expected = fs.readFileSync(test2_file).toString();
+        console.log("Result:\n" + result + "EOF");
+        console.log("Expected:\n" + expected + "EOF");
         expect(result===expected).toBe(true);
     });
 })

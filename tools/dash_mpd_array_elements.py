@@ -29,4 +29,4 @@ def snake(match):
 for line in sys.stdin:
     value = line.rstrip()
     key = re.sub(REG, snake, value, 0).upper()
-    print('        \'' + value + '\',')
+    print('        /\\.' + value + '$/,')
