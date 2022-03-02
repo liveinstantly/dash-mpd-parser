@@ -32,6 +32,7 @@
  */
 
 interface Options {
+    space?: number;
     escapeMode?: boolean;
     attributePrefix?: string;
     arrayAccessForm?: string;

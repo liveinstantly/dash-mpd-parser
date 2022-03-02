@@ -49,8 +49,14 @@
 		config = config || {};
 		initConfigDefaults();
 		initRequiredPolyfills();
+		var IndentChar = " ";
+		var LF = "\n";
 
 		function initConfigDefaults() {
+			if (config.space === undefined) {
+				config.space = 0;
+			}
+
 			if (config.escapeMode === undefined) {
 				config.escapeMode = true;
 			}
@@ -355,8 +361,8 @@
 			}
 		}
 
-		function startTag(jsonObj, element, attrList, closed) {
-			var resultStr = "<" + ((jsonObj != null && jsonObj.__prefix != null) ? (jsonObj.__prefix + ":") : "") + element;
+		function startTag(jsonObj, element, attrList, closed, indent = "", fold = false) {
+			var resultStr = indent + "<" + ((jsonObj != null && jsonObj.__prefix != null) ? (jsonObj.__prefix + ":") : "") + element;
 			if (attrList != null) {
 				for (var aidx = 0; aidx < attrList.length; aidx++) {
 					var attrName = attrList[aidx];
@@ -374,11 +380,16 @@
 				resultStr += ">";
 			else
 				resultStr += "/>";
+			if (fold && config.space > 0)
+				resultStr += LF;
 			return resultStr;
 		}
 
-		function endTag(jsonObj, elementName) {
-			return "</" + (jsonObj.__prefix != null ? (jsonObj.__prefix + ":") : "") + elementName + ">";
+		function endTag(jsonObj, elementName, indent = "", fold = false) {
+			var resultStr = indent + "</" + (jsonObj.__prefix != null ? (jsonObj.__prefix + ":") : "") + elementName + ">";
+			if (fold && config.space > 0)
+				resultStr += LF;
+			return resultStr;
 		}
 
 		function endsWith(str, suffix) {
@@ -411,6 +422,20 @@
 			return config.jsonPropertiesFilter.length == 0
 				|| jsonObjPath == ""
 				|| checkInStdFiltersArrayForm(config.jsonPropertiesFilter, jsonObj, propertyName, jsonObjPath);
+		}
+
+		function calcJSONIndent(jsonObjPath) {
+			var pathLevel = 0;
+			if (jsonObjPath != "") {
+				pathLevel = jsonObjPath.split(".").length
+			}
+			var indent = "";
+			if (config.space > 0) {
+				indent = IndentChar.repeat(pathLevel * config.space);
+			}
+			//console.log("Path = \"%s\" (%d)", jsonObjPath, pathLevel);
+			//console.log("Indent = \"%s\"", indent);
+			return indent;
 		}
 
 		function parseJSONAttributes(jsonObj) {
@@ -468,6 +493,8 @@
 
 		function parseJSONArray(jsonArrRoot, jsonArrObj, attrList, jsonObjPath) {
 			var result = "";
+			var indent = calcJSONIndent(jsonObjPath);
+
 			if (jsonArrRoot.length == 0) {
 				result += startTag(jsonArrRoot, jsonArrObj, attrList, true);
 			}
@@ -477,15 +504,15 @@
 					var arObjElementsCnt = jsonXmlElemCount(arObj);
 
 					if (typeof arObj == "string") {
-						result += startTag(jsonArrRoot[arIdx], jsonArrObj, parseJSONAttributes(jsonArrRoot[arIdx]), false);
+						result += startTag(jsonArrRoot[arIdx], jsonArrObj, parseJSONAttributes(jsonArrRoot[arIdx]), false, indent, false);
 						result += parseJSONObject(jsonArrRoot[arIdx], getJsonPropertyPath(jsonObjPath, jsonArrObj));
-						result += endTag(jsonArrRoot[arIdx], jsonArrObj);
+						result += endTag(jsonArrRoot[arIdx], jsonArrObj, "", true);
 					} else if (arObjElementsCnt > 0 || arObj.__text != null || arObj.__cdata != null) {
-						result += startTag(jsonArrRoot[arIdx], jsonArrObj, parseJSONAttributes(jsonArrRoot[arIdx]), false);
+						result += startTag(jsonArrRoot[arIdx], jsonArrObj, parseJSONAttributes(jsonArrRoot[arIdx]), false, indent, true);
 						result += parseJSONObject(jsonArrRoot[arIdx], getJsonPropertyPath(jsonObjPath, jsonArrObj));
-						result += endTag(jsonArrRoot[arIdx], jsonArrObj);
+						result += endTag(jsonArrRoot[arIdx], jsonArrObj, indent, true);
 					} else {
-						result += startTag(jsonArrRoot[arIdx], jsonArrObj, parseJSONAttributes(jsonArrRoot[arIdx]), true);
+						result += startTag(jsonArrRoot[arIdx], jsonArrObj, parseJSONAttributes(jsonArrRoot[arIdx]), true, indent, true);
 					}
 				}
 			}
@@ -496,6 +523,7 @@
 			var result = "";
 
 			var elementsCnt = jsonXmlElemCount(jsonObj);
+			var indent = calcJSONIndent(jsonObjPath);
 
 			if (elementsCnt > 0) {
 				for (var it in jsonObj) {
@@ -508,7 +536,7 @@
 					var attrList = parseJSONAttributes(subObj)
 
 					if (subObj == null || subObj == undefined) {
-						result += startTag(subObj, it, attrList, true);
+						result += startTag(subObj, it, attrList, true, indent, true);
 					}
 					else
 						if (subObj instanceof Object) {
@@ -517,26 +545,26 @@
 								result += parseJSONArray(subObj, it, attrList, jsonObjPath);
 							}
 							else if (subObj instanceof Date) {
-								result += startTag(subObj, it, attrList, false);
+								result += startTag(subObj, it, attrList, false, indent, false);
 								result += subObj.toISOString();
-								result += endTag(subObj, it);
+								result += endTag(subObj, it, "", true);
 							}
 							else {
 								var subObjElementsCnt = jsonXmlElemCount(subObj);
 								if (subObjElementsCnt > 0 || subObj.__text != null || subObj.__cdata != null) {
-									result += startTag(subObj, it, attrList, false);
+									result += startTag(subObj, it, attrList, false, indent, true);
 									result += parseJSONObject(subObj, getJsonPropertyPath(jsonObjPath, it));
-									result += endTag(subObj, it);
+									result += endTag(subObj, it, indent, true);
 								}
 								else {
-									result += startTag(subObj, it, attrList, true);
+									result += startTag(subObj, it, attrList, true, indent, true);
 								}
 							}
 						}
 						else {
-							result += startTag(subObj, it, attrList, false);
+							result += startTag(subObj, it, attrList, false, indent, false);
 							result += parseJSONTextObject(subObj);
-							result += endTag(subObj, it);
+							result += endTag(subObj, it, "", true);
 						}
 				}
 			}
