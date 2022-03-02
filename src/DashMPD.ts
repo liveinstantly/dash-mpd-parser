@@ -26,7 +26,12 @@ const AUDIO = 'audio';
 const VIDEO = 'video';
 export class DashMPD {
     private mpd: any;
+    private indent: number;
     //consts = Consts;
+
+    constructor() {
+        this.indent = 0;
+    }
 
     parse(mpdXml: string): void {
         const x2js = new X2JS({
@@ -49,9 +54,14 @@ export class DashMPD {
     getMPD(): string {
         const x2js = new X2JS({
             attributePrefix: AT,
-            useDoubleQuotes: true
+            useDoubleQuotes: true,
+            space: this.indent,
         });
         return x2js.json2xml_str(this.mpd);
+    }
+
+    setIndent(space: number) {
+        this.indent = space;
     }
 
     private attr(name: string): string {
