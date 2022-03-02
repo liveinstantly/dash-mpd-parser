@@ -23,6 +23,7 @@ export declare class DashMPD {
     getJSON(): any;
     setJSON(mpdJson: any): void;
     getMPD(): string;
+    setIndent(space: number): void;
     filterVideoRenditionByBandwidth(ranges: [number, number][]): void;
 }
 
