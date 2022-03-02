@@ -1,6 +1,6 @@
 {
   "name": "@liveinstantly/dash-mpd-parser",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A MPEG-DASH MPD manifest parser.",
   "keywords": [
     "MPEG-DASH",
