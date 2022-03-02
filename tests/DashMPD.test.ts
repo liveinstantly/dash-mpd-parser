@@ -12,6 +12,7 @@ import * as fs from 'fs';
 const URL1 = 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd';
 const test1_file = 'tests/test1_bbb_30fps_nospace.mpd';
 const test2_file = 'tests/test2_bbb_30fps_nospace.mpd';
+const test3_file = 'tests/test3_bbb_30fps.mpd';
 
 describe('DashMPD', (): void => {
     test('Test #1: Convert/Revert Test - MPD manifrest XML to JSON to XML', async (): Promise<void> => {
@@ -37,6 +38,18 @@ describe('DashMPD', (): void => {
         mpd.filterVideoRenditionByBandwidth(ranges);
         const result = mpd.getMPD();
         const expected = fs.readFileSync(test2_file).toString();
+        console.log("Result:\n" + result + "EOF");
+        console.log("Expected:\n" + expected + "EOF");
+        expect(result===expected).toBe(true);
+    });
+    test('Test #3: Indent Test - Space 1 byte in output XML', async (): Promise<void> => {
+        const mpd: DashMPD = new DashMPD();
+        const response = await fetch(URL1);
+        const body = await response.text();
+        mpd.parse(body);
+        mpd.setIndent(1);
+        const result = mpd.getMPD();
+        const expected = fs.readFileSync(test3_file).toString();
         console.log("Result:\n" + result + "EOF");
         console.log("Expected:\n" + expected + "EOF");
         expect(result===expected).toBe(true);
