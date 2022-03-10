@@ -20,10 +20,13 @@
 
 import { DashConstants as Consts } from './DashMPDConstants';
 import X2JS from './X2JS';
+import { MEDIA_TYPE_VIDEO, MEDIA_TYPE_AUDIO, MIME_TYPE_VIDEO_PREFIX } from './RFC6838Types';
 
 const AT = '@';
-const AUDIO = 'audio';
-const VIDEO = 'video';
+const Attr = function(name: string): string {
+    return AT + name;
+};
+
 export class DashMPD {
     private mpd: any;
     private indent: number;
@@ -55,7 +58,7 @@ export class DashMPD {
         const x2js = new X2JS({
             attributePrefix: AT,
             useDoubleQuotes: true,
-            space: this.indent,
+            space: this.indent
         });
         return x2js.json2xml_str(this.mpd);
     }
@@ -69,13 +72,30 @@ export class DashMPD {
     }
 
     filterVideoRenditionByBandwidth(ranges: [number, number][]): void {
-        let self = this;
-        function filterFn(element: any) {
+        function filterFnForVideoAdaptationSet(element: any) {
             let result = false;
             ranges.forEach((range) => {
                 if (
-                    range[0] <= element[self.attr(Consts.ATTR_BANDWIDTH)] &&
-                    element[self.attr(Consts.ATTR_BANDWIDTH)] <= range[1]
+                    range[0] <= element[Attr(Consts.ATTR_BANDWIDTH)] &&
+                    element[Attr(Consts.ATTR_BANDWIDTH)] <= range[1]
+                ) {
+                    result = true;
+                }
+            });
+            return result;
+        }
+        function filterFnForUnknownAdaptationSet(element: any) {
+            const _mimeType = element[Attr(Consts.ATTR_MIME_TYPE)]
+                ? element[Attr(Consts.ATTR_MIME_TYPE)]
+                : '';
+            if (!_mimeType.startsWith(MIME_TYPE_VIDEO_PREFIX)) {
+                return true;
+            }
+            let result = false;
+            ranges.forEach((range) => {
+                if (
+                    range[0] <= element[Attr(Consts.ATTR_BANDWIDTH)] &&
+                    element[Attr(Consts.ATTR_BANDWIDTH)] <= range[1]
                 ) {
                     result = true;
                 }
@@ -85,8 +105,19 @@ export class DashMPD {
 
         this.mpd[Consts.MPD][Consts.PERIOD].forEach((period: any) => {
             period[Consts.ADAPTATION_SET].forEach((adaptationSet: any) => {
-                if (adaptationSet[this.attr(Consts.ATTR_CONTENT_TYPE)] == VIDEO) {
-                    let filteredRenditions = adaptationSet[Consts.REPRESENTATION].filter(filterFn);
+                const _contentType = adaptationSet[this.attr(Consts.ATTR_CONTENT_TYPE)]
+                    ? adaptationSet[this.attr(Consts.ATTR_CONTENT_TYPE)]
+                    : '';
+                const _mimeType = adaptationSet[this.attr(Consts.ATTR_MIME_TYPE)]
+                    ? adaptationSet[this.attr(Consts.ATTR_MIME_TYPE)]
+                    : '';
+                if (_contentType == MEDIA_TYPE_VIDEO || _mimeType.startsWith(MIME_TYPE_VIDEO_PREFIX)) {
+                    let filteredRenditions = adaptationSet[Consts.REPRESENTATION].filter(filterFnForVideoAdaptationSet);
+                    adaptationSet[Consts.REPRESENTATION] = filteredRenditions;
+                } else if (_contentType === '' && _mimeType === '') {
+                    let filteredRenditions = adaptationSet[Consts.REPRESENTATION].filter(
+                        filterFnForUnknownAdaptationSet
+                    );
                     adaptationSet[Consts.REPRESENTATION] = filteredRenditions;
                 }
             });
