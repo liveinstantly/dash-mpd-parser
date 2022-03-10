@@ -3,4 +3,4 @@
 #
 
 # Test files
-tests/*.mpd     text eol=lf
+tests/data/*.mpd     text eol=lf
