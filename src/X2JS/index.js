@@ -95,6 +95,10 @@
 			if (config.nativeTypeAttributes == undefined) {
 				config.nativeTypeAttributes = false;
 			}
+
+			if (config.addElementTagForEmptyArray == undefined) {
+				config.addElementTagForEmptyArray = false;
+			}
 		}
 
 		var DOMNodeTypes = {
@@ -268,7 +272,7 @@
 						// nativeTypeAttributes option support
 						if (config.nativeTypeAttributes) {
 							value = nativeType(attr.value);
-						}		
+						}
 						result[config.attributePrefix + attr.name] = value; // attr.value;
 					}
 
@@ -496,7 +500,10 @@
 			var indent = calcJSONIndent(jsonObjPath);
 
 			if (jsonArrRoot.length == 0) {
-				result += startTag(jsonArrRoot, jsonArrObj, attrList, true);
+				// Add element tag even if Empty Array
+				if (config.addElementTagForEmptyArray) {
+					result += startTag(jsonArrRoot, jsonArrObj, attrList, true);
+				}
 			}
 			else {
 				for (var arIdx = 0; arIdx < jsonArrRoot.length; arIdx++) {
@@ -508,9 +515,15 @@
 						result += parseJSONObject(jsonArrRoot[arIdx], getJsonPropertyPath(jsonObjPath, jsonArrObj));
 						result += endTag(jsonArrRoot[arIdx], jsonArrObj, "", true);
 					} else if (arObjElementsCnt > 0 || arObj.__text != null || arObj.__cdata != null) {
-						result += startTag(jsonArrRoot[arIdx], jsonArrObj, parseJSONAttributes(jsonArrRoot[arIdx]), false, indent, true);
-						result += parseJSONObject(jsonArrRoot[arIdx], getJsonPropertyPath(jsonObjPath, jsonArrObj));
-						result += endTag(jsonArrRoot[arIdx], jsonArrObj, indent, true);
+						if (arObj.__text != null) {
+							result += startTag(jsonArrRoot[arIdx], jsonArrObj, parseJSONAttributes(jsonArrRoot[arIdx]), false, indent, false);
+							result += parseJSONObject(jsonArrRoot[arIdx], getJsonPropertyPath(jsonObjPath, jsonArrObj));
+							result += endTag(jsonArrRoot[arIdx], jsonArrObj, "", true);
+						} else {
+							result += startTag(jsonArrRoot[arIdx], jsonArrObj, parseJSONAttributes(jsonArrRoot[arIdx]), false, indent, true);
+							result += parseJSONObject(jsonArrRoot[arIdx], getJsonPropertyPath(jsonObjPath, jsonArrObj));
+							result += endTag(jsonArrRoot[arIdx], jsonArrObj, indent, true);
+						}
 					} else {
 						result += startTag(jsonArrRoot[arIdx], jsonArrObj, parseJSONAttributes(jsonArrRoot[arIdx]), true, indent, true);
 					}
