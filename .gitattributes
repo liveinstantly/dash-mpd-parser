@@ -1,0 +1,6 @@
+#
+# .gitattributes
+#
+
+# Test files
+tests/*.mpd     text eol=lf
